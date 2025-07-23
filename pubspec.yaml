@@ -1,0 +1,11 @@
+name: human_readable_formats
+version: 0.0.1
+publish_to: none
+description: >
+  Pure Dart package to format raw data (numbers, dates, file sizes, etc.) into human-readable text. Platform-independent, no Flutter dependency.
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+dependencies:
+  intl: ^0.19.0
+dev_dependencies:
+  test: ^1.24.0
