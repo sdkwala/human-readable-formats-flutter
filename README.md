@@ -1,5 +1,7 @@
 # Human Readable Formats
 
+[![pub package](https://img.shields.io/pub/v/human_readable_formats.svg)](https://pub.dev/packages/human_readable_formats)
+
 A pure all in one Dart package to format raw data like numbers, dates, and file sizes into human-readable text. This package is platform-independent and has no dependency on Flutter, making it suitable for any Dart project.
 
 ## Brought to you by SDKWala
@@ -32,7 +34,7 @@ Then, run `dart pub get`.
 ## Usage
 
 ```dart
-import 'package:human_readable_formats/humanize.dart';
+import 'package:human_readable_formats/human_readable_formats.dart';
 
 void main() {
   // Relative time

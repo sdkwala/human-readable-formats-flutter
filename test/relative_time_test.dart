@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:human_readable_formats/humanize.dart';
+import 'package:human_readable_formats/human_readable_formats.dart';
 
 void main() {
   group('humanizeRelativeTime', () {
