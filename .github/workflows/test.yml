@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sdk: ["3.0.0", "stable"]
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+          
+      - name: Show Dart version
+        run: dart --version
+        
+      - name: Install dependencies
+        run: dart pub get
+        
+      - name: Run tests
+        run: dart test
+        
+      - name: Run formatter
+        run: dart format --output=none --set-exit-if-changed .
+        
+      - name: Run analyzer
+        run: dart analyze --fatal-infos
