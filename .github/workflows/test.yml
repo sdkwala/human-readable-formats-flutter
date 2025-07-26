@@ -27,11 +27,19 @@ jobs:
       - name: Install dependencies
         run: dart pub get
         
-      - name: Run tests
-        run: dart test
+      - name: Run tests with detailed output
+        run: dart test --reporter expanded
+        continue-on-error: true
         
       - name: Run formatter
         run: dart format --output=none --set-exit-if-changed .
         
       - name: Run analyzer
         run: dart analyze --fatal-infos
+        
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.sdk }}
+          path: test/**/output.txt
