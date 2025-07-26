@@ -1,27 +1,54 @@
+import 'package:human_readable_formats/src/duration.dart';
 import 'package:test/test.dart';
-import 'package:human_readable_formats/human_readable_formats.dart';
 
 void main() {
   group('humanizeDuration', () {
-    test('formats seconds', () {
-      expect(humanizeDuration(Duration(seconds: 0)), '0s');
-      expect(humanizeDuration(Duration(seconds: 45)), '45s');
+    group('Short Style', () {
+      test('formats a simple duration', () {
+        final duration = Duration(hours: 1, minutes: 30);
+        expect(humanizeDuration(duration), '1h 30m');
+      });
+
+      test('handles zero duration', () {
+        expect(humanizeDuration(Duration.zero), '0μs');
+      });
     });
-    test('formats minutes and seconds', () {
-      expect(humanizeDuration(Duration(minutes: 2, seconds: 10)), '2m');
-      expect(humanizeDuration(Duration(minutes: 5)), '5m');
+
+    group('Long Style', () {
+      test('formats with default conjunction', () {
+        final duration = Duration(days: 1, hours: 5, minutes: 10);
+        expect(humanizeDuration(duration, style: DurationTextStyle.long), '1 day, 5 hours, 10 minutes');
+      });
+
+      test('formats a two-part duration', () {
+        final duration = Duration(hours: 1, minutes: 30);
+        expect(humanizeDuration(duration, style: DurationTextStyle.long), '1 hour and 30 minutes');
+      });
+
+      test('formats a single-part duration', () {
+        final duration = Duration(days: 2);
+        expect(humanizeDuration(duration, style: DurationTextStyle.long), '2 days');
+      });
     });
-    test('formats hours, minutes', () {
-      expect(humanizeDuration(Duration(hours: 1, minutes: 25)), '1h 25m');
-      expect(humanizeDuration(Duration(hours: 3)), '3h');
+
+    group('Unit Limiting', () {
+      test('limits the number of units displayed', () {
+        final duration = Duration(days: 1, hours: 5, minutes: 10, seconds: 30);
+        expect(humanizeDuration(duration, maxUnits: 2), '1d 5h');
+        expect(humanizeDuration(duration, style: DurationTextStyle.long, maxUnits: 2), '1 day and 5 hours');
+      });
     });
-    test('formats days, hours', () {
-      expect(humanizeDuration(Duration(days: 2, hours: 3)), '2d 3h');
-      expect(humanizeDuration(Duration(days: 1)), '1d');
-    });
-    test('does not show zero units', () {
-      expect(humanizeDuration(Duration(hours: 0, minutes: 0, seconds: 5)), '5s');
-      expect(humanizeDuration(Duration(hours: 0, minutes: 2, seconds: 0)), '2m');
+
+    group('Localization', () {
+      test('uses English by default', () {
+        final duration = Duration(days: 2, hours: 1);
+        expect(humanizeDuration(duration, style: DurationTextStyle.long), '2 days and 1 hour');
+      });
+
+      test('uses Spanish when locale is provided', () {
+        final duration = Duration(days: 2, hours: 1);
+        expect(humanizeDuration(duration, style: DurationTextStyle.long, locale: 'es'), '2 días and 1 hora');
+      });
     });
   });
 }
